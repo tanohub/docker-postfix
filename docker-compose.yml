@@ -9,21 +9,30 @@ services:
       - '25:25'
     volumes:
       - "./data/postfix/scripts/start-endpoint.sh:/start-endpoint.sh"
+      # postfix configs
+      - "./data/postfix/conf/main.cf:/etc/postfix/main.cf"
+      - "./data/postfix/conf/master.cf:/etc/postfix/master.cf"
+      # postfix mysql queries
+      - "./data/postfix/conf/mysql-domains.cf:/etc/postfix/mysql-domains.cf"
+      - "./data/postfix/conf/mysql-users.cf:/etc/postfix/mysql-users.cf"
+      - "./data/postfix/conf/mysql-forwards.cf:/etc/postfix/mysql-forwards.cf"
+      - "./data/postfix/conf/mysql-email2email.cf:/etc/postfix/mysql-email2email.cf"
       # force local timezone      
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-
+    depends_on:
+      - "adminer"
   db:
     image: mysql:5.7
     container_name: ${COMPOSE_PROJECT_NAME}_db
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --sql_mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
     environment:
       MYSQL_ROOT_PASSWORD: Password123
     ports:
       - '3306:3306'
     volumes:
       # mysql init DB and users
-      - ./data/provision/mysql/init:/docker-entrypoint-initdb.d
+      - ./provision/mysql/init:/docker-entrypoint-initdb.d
       # force local timezone      
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

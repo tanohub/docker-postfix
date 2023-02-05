@@ -1,0 +1,5 @@
+user = postfix_ro
+password = Password123
+dbname = mail
+query = SELECT domain AS 'virtual' FROM domains WHERE domain='%s'
+hosts = db

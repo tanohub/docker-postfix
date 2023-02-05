@@ -1,0 +1,5 @@
+user = postfix_ro
+password = Password123
+dbname = mail
+query = SELECT destination FROM forward WHERE source='%s'
+hosts = db

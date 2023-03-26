@@ -16,7 +16,6 @@ services:
       - "./data/postfix/conf/mysql-domains.cf:/etc/postfix/mysql-domains.cf"
       - "./data/postfix/conf/mysql-users.cf:/etc/postfix/mysql-users.cf"
       - "./data/postfix/conf/mysql-forwards.cf:/etc/postfix/mysql-forwards.cf"
-      - "./data/postfix/conf/mysql-email2email.cf:/etc/postfix/mysql-email2email.cf"
       # force local timezone      
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

@@ -1,5 +1,0 @@
-user = postfix_ro
-password = Password123
-dbname = mail
-query = SELECT email FROM users WHERE email='%s' AND status='ENABLE'
-hosts = db

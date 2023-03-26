@@ -10,7 +10,7 @@ GRANT ALL PRIVILEGES ON mail.* TO 'postfix_rw'@'%';
 
 USE mail;
 
--- domain table
+-- domains table
 CREATE TABLE `domains` (
      `domain` varchar(200) NOT NULL,
      `Status` enum('DISABLE','ENABLE') NOT NULL  default 'ENABLE',
@@ -30,7 +30,6 @@ CREATE TABLE `users` (
    PRIMARY KEY  (`email`)
   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Mailboxes';
 
-
 -- forwards table
 CREATE TABLE `forward` (
    `source` varchar(200) NOT NULL,
@@ -42,15 +41,15 @@ CREATE TABLE `forward` (
    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Forwards' ;
 
 -- insert test data
-INSERT INTO `mail`.`domains`(`domain`) VALUES
-('domain01.tld'),
-('domain02.tld');
+INSERT INTO `mail`.`domains`(`domain`, `created`) VALUES
+('domain01.tld', now()),
+('domain02.tld', now());
 
-INSERT INTO `mail`.`users`(`email`, `password`) VALUES
-('user01@domain01.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16)))),
-('user02@domain01.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16)))),
-('user01@domain02.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))));
+INSERT INTO `mail`.`users`(`email`, `password`, `created`) VALUES
+('user01@domain01.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))), now()),
+('user02@domain01.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))), now()),
+('user01@domain02.tld', ENCRYPT('Password123', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))), now());
 
-INSERT INTO `mail`.`forward`(`source`, `destination`) VALUES
-('alias_user01@domain01.tld', 'user01@domain01.tld');
+INSERT INTO `mail`.`forward`(`source`, `destination`, `created`) VALUES
+('alias_user01@domain01.tld', 'user01@domain01.tld', now());
 
